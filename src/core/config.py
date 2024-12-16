@@ -36,7 +36,7 @@ class RuntimeConfig(BaseSettings):
         PORT (int): Port the application listens on.
     """
     DEBUG: bool = Field(False, env="DEBUG")
-    PORT: int = Field(8080, env="PORT")  # Default updated to 8080 to reduce conflicts; configurable via environment
+    PORT: int = Field(8000, env="PORT")
 
 class SecurityConfig(BaseSettings):
     """
