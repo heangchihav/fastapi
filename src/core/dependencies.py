@@ -5,11 +5,11 @@ This module contains FastAPI dependencies for authentication and authorization.
 """
 
 from fastapi import Request, HTTPException, status, Depends
-from .config import Config, get_settings
+from .config import Config as Settings, get_settings
 
 async def verify_express_origin(
     request: Request,
-    settings: Config = Depends(get_settings)
+    settings: Settings = Depends(get_settings)
 ) -> bool:
     """
     Verify that the request comes from the authorized Express.js server.
