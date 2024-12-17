@@ -4,3 +4,5 @@ pydantic>=2.5.1
 pydantic-settings>=2.1.0
 python-dotenv>=1.0.0
 python-json-logger>=2.0.7
+elasticsearch>=8.11.0
+python-logstash>=0.4.8

@@ -1,9 +1,12 @@
 import logging
 import json
 import socket
+import sys
 from datetime import datetime
 from logging.handlers import SocketHandler
 from typing import Any, Dict
+import logstash
+from pythonjsonlogger import jsonlogger
 
 class LogstashFormatter(logging.Formatter):
     def __init__(self):
@@ -19,6 +22,7 @@ class LogstashFormatter(logging.Formatter):
             'path': record.pathname,
             'line_number': record.lineno,
             'function': record.funcName,
+            'logger': record.name,
             'message': record.getMessage()
         }
 
@@ -45,24 +49,31 @@ class CustomLogger(logging.Logger):
         super()._log(level, msg, args, exc_info, extra, **kwargs)
 
 def setup_logging():
+    # Set custom logger class
     logging.setLoggerClass(CustomLogger)
+    
+    # Create logger
     logger = logging.getLogger('fastapi')
     logger.setLevel(logging.INFO)
 
-    # Console Handler
-    console_handler = logging.StreamHandler()
+    # Console handler with LogstashFormatter
+    console_handler = logging.StreamHandler(sys.stdout)
     console_handler.setLevel(logging.INFO)
-    console_formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    console_handler.setFormatter(LogstashFormatter())
+    
+    # Logstash handler
+    logstash_handler = logstash.TCPLogstashHandler(
+        'localhost',
+        5000,
+        version=1
     )
-    console_handler.setFormatter(console_formatter)
-    logger.addHandler(console_handler)
-
-    # Logstash Handler
-    logstash_handler = SocketHandler('logstash', 5000)
     logstash_handler.setFormatter(LogstashFormatter())
+
+    # Add handlers to logger
+    logger.addHandler(console_handler)
     logger.addHandler(logstash_handler)
 
     return logger
 
+# Create a singleton logger instance
 logger = setup_logging()
