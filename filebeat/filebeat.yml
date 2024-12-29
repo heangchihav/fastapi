@@ -1,0 +1,25 @@
+filebeat.inputs:
+  - type: log
+    enabled: true
+    paths:
+      - /app/fastAPI/logs/*.log    # Path to the FastAPI logs directory
+    exclude_files: ['\.gz$', '\.tmp$']  # Exclude rotated and temporary log files
+    fields:
+      service: fastapi-app         # Add a custom field to identify the service
+    fields_under_root: true        # Flatten fields into the root object for clarity
+
+output.logstash:
+  hosts: ["logstash:5044"]         # Logstash hostname and port
+  
+processors:
+  - add_cloud_metadata: ~  # Disable cloud metadata fetching
+
+# Optional: Logging configuration for Filebeat
+logging:
+  to_files: true
+  files:
+    path: /usr/share/filebeat/logs
+    name: filebeat
+    keepfiles: 7
+    permissions: 0644
+  level: info  # Set logging level to control verbosity
