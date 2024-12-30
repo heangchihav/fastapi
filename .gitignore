@@ -1,0 +1,61 @@
+# Python specific
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.env
+.env
+.env.example
+
+# Logs
+logs/
+*.log
+*.out
+*.err
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+
+# FastAPI specific
+src/__pycache__/
+*.sqlite3
+
+# Filebeat specific
+filebeat/logs/
+filebeat/data/
+filebeat/config/*.bak
+filebeat/config/*.tmp
+
+# Logstash specific
+logstash/logs/
+logstash/config/*.bak
+logstash/config/*.tmp
+
+# Docker specific
+docker-compose.override.yml
+**/Dockerfile~
+
+# IDE specific
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS specific
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Tests and coverage reports
+.pytest_cache/
+coverage.xml
+*.cover
+*.coverage
+htmlcov/
+
+# Other
+node_modules/
